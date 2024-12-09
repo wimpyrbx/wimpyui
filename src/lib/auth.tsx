@@ -1,22 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-interface AuthContextType {
-  user: any | null;
-  login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
-  loading: boolean;
-}
+import type { User, AuthContextType } from '../types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in (check localStorage or session)
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
@@ -28,14 +21,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       // For testing purposes, hardcode the ltg:ltg credentials
       if (username === 'ltg' && password === 'ltg') {
-        const userData = {
+        const userData: User = {
           id: '1',
-          username: 'ltg',
+          name: 'ltg',
+          email: 'ltg@example.com',
           createdAt: new Date().toISOString()
         };
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
-        navigate('/dashboard');
+        navigate('/home');
         return true;
       }
       return false;
@@ -48,7 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
-    navigate('/login');
+    navigate('/');
   };
 
   return (
