@@ -5,7 +5,7 @@ import { login, createUserSession, getUser } from "~/utils/auth.server";
 
 export async function loader({ request }: ActionFunctionArgs) {
   const user = await getUser(request);
-  if (user) return redirect("/");
+  if (user) return redirect("/dashboard");
   return null;
 }
 
@@ -32,7 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  return createUserSession(user.id, "/");
+  return createUserSession(user.id, "/dashboard");
 }
 
 export default function Login() {
