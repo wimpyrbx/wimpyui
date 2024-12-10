@@ -5,6 +5,7 @@ export default {
     "./app/**/*.{js,jsx,ts,tsx}",
     "./app/routes/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
